@@ -129,12 +129,17 @@ def Cleanup():
 def ListLayers():
     global Layers, LayerHeights, Biome
     Cleanup()
+    Cleanup()
     print(" Biome type: "+Biome.capitalize()+"\n")
+    print("  Layer | Height | Block")
+    print("  ======================")
     print("  Layer | Height | Block")
     print("  ======================")
     for element in range(len(LayerHeights)):
         reverse_block_index: int = len(LayerHeights) - element - 1
         block_height_str = str(LayerHeights[reverse_block_index])
+        block_height_str = (" " * (6 - len(block_height_str))) + block_height_str
+        print((" " * (7 - len(str(element)))) + str(element), end=" | ")
         block_height_str = (" " * (6 - len(block_height_str))) + block_height_str
         print((" " * (7 - len(str(element)))) + str(element), end=" | ")
         print(block_height_str, end=" | ")
