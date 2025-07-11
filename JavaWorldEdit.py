@@ -1,16 +1,74 @@
 #!/usr/bin/env python3
 
 LayerHeights: list[int] = [1, 2, 1]
-Layers: list[str] = ["bedrock", "dirt", "grass"]
+Layers: list[str] = ["bedrock", "dirt", "grass_block"]
 
 Biome: str = "plains"
 
-BlockID: dict[str] = {
-    "bedrock" : "bedrock",
-    "dirt" : "dirt",
-    "grass" : "grass_block",
-    "grass_block" : "grass_block",
-}
+BlockID: list[str] = [
+    "air",
+    "bedrock",
+    "obsidian",
+    "crying_obsidian",
+    "stone",
+    "infested_stone",
+    "diamond_ore",
+    "iron_ore",
+    "gold_ore",
+    "copper_ore",
+    "coal_ore",
+    "emerald_ore",
+    "redstone_ore",
+    "lapis_ore",
+    "raw_iron_block",
+    "raw_copper_block",
+    "raw_gold_block",
+    "deepslate",
+    "infested_deepslate",
+    "deepslate_diamond_ore",
+    "deepslate_iron_ore",
+    "deepslate_gold_ore",
+    "deepslate_copper_ore",
+    "deepslate_coal_ore",
+    "deepslate_emerald_ore",
+    "deepslate_redstone_ore",
+    "deepslate_lapis_ore",
+    "coal_block",
+    "amethyst_block",
+    "diamond_block",
+    "iron_block",
+    "gold_block",
+    "copper_block",
+    "coal_block",
+    "emerald_block",
+    "redstone_block",
+    "lapis_block",
+    "tuff",
+    "calcite",
+    "andesite",
+    "diorite",
+    "granite",
+    "basalt",
+    "blackstone",
+    "ice",
+    "packed_ice",
+    "blue_ice",
+    "moss_block",
+    "gravel",
+    "clay",
+    "sand",
+    "sandstone",
+    "red_sand",
+    "red_sandstone",
+    "dripstone_block",
+    "prismarine",
+    "magma_block",
+    "lava",
+    "water",
+    "dirt",
+    "ancient_debris",
+    "grass_block",
+]
 
 BiomeID: dict[str] = {
     "plains" : "plains",
@@ -58,12 +116,15 @@ def SavePresetName():
 
 def Cleanup():
     global Layers, LayerHeights, Biome
-    previous_layer_block: str = ""
+    layer_removals_deferred: list[int] = []
     for layer in range(len(Layers)):
-        if layer == previous_layer_block:
-            LayerHeights[layer] += LayerHeights[layer - 1]
-            Layers.pop(layer)
-        previous_layer_block = layer
+        if layer > 0:
+            if Layers[layer] == Layers[layer - 1]:
+                LayerHeights[layer] += LayerHeights[layer - 1]
+                layer_removals_deferred += [layer - 1]
+    for item in layer_removals_deferred:
+        Layers.pop(item)
+        LayerHeights.pop(item)
 
 def ListLayers():
     global Layers, LayerHeights, Biome
@@ -121,10 +182,9 @@ def AddLayer():
         print("Layer number cannot be higher than the number of layers + 1")
         return
     block_name: str = input("Please choose a block for this layer: ").lower()
-    try:
-        GetBlockID(block_name)
-    except KeyError:
+    if block_name not in BlockID:
         print("Invalid block name '"+block_name+"'")
+        return
     else:
         block_height: int = int(input("Please select a height for this layer: "))
         reverse_layer_index: int = len(LayerHeights) - layer_number
@@ -143,21 +203,33 @@ def main():
             print(" list   - list all layers")
             print(" add    - add a layer")
             print(" remove - remove a layer")
-            print(" edit   - edit a layer")
             print(" get    - prints out the preset string")
             print(" save   - saves the preset string to a file")
         elif command == "list":
-            ListLayers()
+            try:
+                ListLayers()
+            except:
+                print("Some error occurred when listing current layers")
         elif command == "add":
-            AddLayer() #TODO
+            try:
+                AddLayer()
+            except:
+                print("Some error occurred when adding a layer")
         elif command == "remove":
-            RemoveLayer()
-        elif command == "edit":
-            print("Not implemented") #TODO
+            try:
+                RemoveLayer()
+            except:
+                print("Some error occurred when removing a layer")
         elif command == "get":
-            ListPresetName()
+            try:
+                ListPresetName()
+            except:
+                print("Some error occurred when listing a preset")
         elif command == "save":
-            SavePresetName()
+            try:
+                SavePresetName()
+            except:
+                print("Some error occurred when saving a preset")
         elif command == "exit":
             return
         else:

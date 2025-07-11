@@ -1,1 +1,0 @@
-minecraft:bedrock,2*minecraft:dirt,minecraft:grass;minecraft:plains
