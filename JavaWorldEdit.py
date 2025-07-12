@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-
 import logging
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(filename='main.log', level=logging.INFO)
+formatter = "%(asctime)s - %(levelname)s - %(name)s - %(message)s"
+
+logging.basicConfig(filename='main.log', level=logging.INFO, format=formatter)
 
 
 LayerHeights: list[int] = [1, 2, 1]
@@ -111,7 +112,7 @@ def SetBiome():
     logger.info(f"[SetBiome] => Initialize ..")
     global Biome
     print(x for x in BiomeID.keys())
-    biome: str = input("Enter the biome you want to use:").lower()
+    biome: str = input("Enter the biome you want to use: ").lower()
     if biome not in BiomeID.keys():
         print("This is not a valid biome!")
         logger.error(f"[SetBiome] => {biome} This is not a valid biome!")
@@ -280,7 +281,7 @@ def main():
         if command == "help":
             logger.info("[Main] => Initialize <Help> ..")
             print(" list   - list all layers")
-            print(" set - select the biome")
+            print(" set    - select the biome")
             print(" add    - add a layer")
             print(" remove - remove a layer")
             print(" get    - prints out the preset string")
