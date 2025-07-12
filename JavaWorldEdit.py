@@ -78,6 +78,25 @@ BlockID: list[str] = [
 
 BiomeID: dict[str] = {
     "plains" : "plains",
+    "sunflower_plains": "sunflower_plains",
+    "snowy_plains": "snowy_plains",
+    "desert": "desert",
+    "swamp": "swamp",
+    "mangrove_swamp": "mangrove_swamp",
+    "forest": "forest",
+    "flower_forest": "flower_forest",
+    "birch_forest": "birch_forest",
+    "dark_forest": "dark_forest",
+    "taiga": "taiga",
+    "snowy_taiga": "snowy_taiga",
+    "savanna": "savanna",
+    "savanna_plateau": "savanna_plateau",
+    "jungle": "jungle",
+    "bamboo_jungle": "bamboo_jungle",
+    "badlands": "badlands",
+    "river": "river",
+    "nether_wastes": "nether_wastes",
+    "the_end": "the_end"
 }
 
 def GetBlockID(block: str = "dirt"):
@@ -87,6 +106,18 @@ def GetBlockID(block: str = "dirt"):
 def GetBiomeID(biome: str = "plains"):
     logger.info(f"[GetBiomeID] => minecraft:{BiomeID[biome]}")
     return "minecraft:"+BiomeID[biome]
+
+def SetBiome():
+    logger.info(f"[SetBiome] => Initialize ..")
+    global Biome
+    print(x for x in BiomeID.keys())
+    biome: str = input("Enter the biome you want to use:").lower()
+    if biome not in BiomeID.keys():
+        print("This is not a valid biome!")
+        logger.error(f"[SetBiome] => {biome} This is not a valid biome!")
+    logger.info(f"[SetBiome] => Biome:{Biome} changed into {biome}")
+    Biome = biome
+    print("Biome set successfully!")
 
 def GetPresetName():
     logger.info(f"[GetPresetName] => Initialize ..")
@@ -249,6 +280,7 @@ def main():
         if command == "help":
             logger.info("[Main] => Initialize <Help> ..")
             print(" list   - list all layers")
+            print(" set - select the biome")
             print(" add    - add a layer")
             print(" remove - remove a layer")
             print(" get    - prints out the preset string")
@@ -260,6 +292,13 @@ def main():
             except Exception as e:
                 logger.error(f"[Main] => Error: {e}")
                 print("Some error occurred when listing current layers")
+        elif command == "set":
+            try:
+                logger.info("[Main] => Initialize <Set Biome> ..")
+                SetBiome()
+            except Exception as e:
+                logger.error(f"[Main] => Error: {e}")
+                print("Some error occurred when selecting the biome")
         elif command == "add":
             try:
                 logger.info("[Main] => Initialize <Add Layer> ..")
